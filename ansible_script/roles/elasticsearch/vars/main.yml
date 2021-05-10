@@ -1,0 +1,9 @@
+elastic_host: 127.0.0.1
+elastic_port: 9200
+elastic_protocol: http
+es_api_basic_auth_username: elastic
+es_api_basic_auth_password: s3cr3t
+
+elastic_username: elastic
+elastic_password: testpassword
+

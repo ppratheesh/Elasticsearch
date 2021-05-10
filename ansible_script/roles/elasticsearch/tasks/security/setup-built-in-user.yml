@@ -1,0 +1,20 @@
+---
+
+- name: Restarting Elasticsearch
+  service: 
+   name: elasticsearch
+   state: restarted
+
+#------------------------------- Setup Built-in User passwords-----------
+
+- name: Update elastic user password
+  uri:
+   url: "{{ es_api_uri }}/{{ es_security_api }}/user/{{es_api_basic_auth_username}}/_password"
+   method: POST
+   body_format: json
+   body: "{ \"password\":\"{{ elastic_password }}\" }"
+   status_code: 200
+   user: "{{es_api_basic_auth_username}}"
+   password: "{{es_api_basic_auth_password}}"
+   force_basic_auth: "{{ es_force_basic_auth }}"
+   validate_certs: "{{ es_validate_certs }}"

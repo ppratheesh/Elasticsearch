@@ -1,0 +1,46 @@
+---
+- name: Install Packages
+  apt: name={{ item }} state=latest update_cache=yes
+  with_items:
+    - apt-transport-https
+    - curl
+    - wget
+
+- name: getting apt repo key
+  apt_key:
+    url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+    state: present
+
+- name: install es apt repo
+  apt_repository:    
+    repo: deb https://artifacts.elastic.co/packages/7.x/apt stable main
+    state: present
+    filename: elastic-7.x.list
+    update_cache: yes
+
+- name: install java
+  apt:
+    name: openjdk-8-jre
+    state: present
+    update_cache: yes
+
+- name: install elasticsearch
+  apt:
+    name: elasticsearch
+    state: present
+    update_cache: yes
+
+- name: Replace default elasticsearch.yml
+  template:
+   src: elasticsearch.yml
+   dest: /etc/elasticsearch/elasticsearch.yml
+
+- name: reload systemd config
+  systemd: daemon_reload=yes
+
+- name: starting elasticsearch
+  systemd: state=started name=elasticsearch
+ 
+- name: Including xpack security setup configuration
+  include: security/keystore.yml
+

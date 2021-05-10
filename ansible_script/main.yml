@@ -1,0 +1,6 @@
+---
+- name: sample playbook
+  hosts: es-host
+  become: yes
+  roles:
+     - elasticsearch
